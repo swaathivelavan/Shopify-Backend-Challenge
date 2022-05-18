@@ -2,11 +2,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const { dbURI } = require('./config');
+const ItemModel = require('./models/item')
 
-console.log("hello");
-// connect to mongoDB 
-//const dbURI =process.env.database_URI_key;
-console.log(dbURI);
+// This ensures that only when database connection has been established we listen for requests
 mongoose.connect(dbURI)
 .then(()=> 
 app.listen(3000)
@@ -14,10 +12,21 @@ app.listen(3000)
 .catch(()=>console.log("error"));
 
 
-app.get('/about',(req,res) => { 
-res.send();
+app.get('/add-item',(req,res) => { 
+    const item = new ItemModel({
+        title:'strawberry',
+        description:'a juicy fruit',
+        quantity:5,
+        warehouse_location:'New York - 1'
+    });
+    item.save()
+    .then((result) => res.send(result))
+    .catch((err) => {console.log(err)});
 });
 
+
+
+ 
 
 
 
