@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Swaathi's | <%= page %></title>
+    </head>
+    <body>
+        <% if (items.length > 0) { %>
+            <% items.forEach(item => { %>
+              <h3 class="title"><%= item.title %></h3>
+              <p class="snippet"><%= item.description %></p>
+              <p class="snippet"><%= item.quantity %></p>
+              <p class="snippet"><%= item.warehouse_location %></p>
+            <% }) %>
+          <% } else { %>
+            <p>No items in the inventory..Do you want to add items?</p>
+          <% } %>
+    </body>
+
+</html>

@@ -4,12 +4,21 @@ const mongoose = require('mongoose');
 const { dbURI } = require('./config');
 const ItemModel = require('./models/item')
 
+// register view engine ejs
+
+app.set ('view engine','ejs');
+
 // This ensures that only when database connection has been established we listen for requests
 mongoose.connect(dbURI)
 .then(()=> 
 app.listen(3000)
 )
 .catch(()=>console.log("error"));
+
+// Home page - redirect to list of all inventory items
+app.get('/',(req,res) => {
+    res.redirect('/all-items');
+});
 
 // The save method allows us to add a document to mongoDB using mongoose
 app.get('/add-item',(req,res) => { 
@@ -27,7 +36,7 @@ app.get('/add-item',(req,res) => {
 // The find method allows us to list all document in mongoDB using mongoose
 app.get('/all-items',(req,res) => {
     ItemModel.find()
-    .then((result) => res.send(result))
+    .then((result) =>  res.render('index', {items:result ,page:'Shopify Inventory'} ))
     .catch((err) => {console.log(err)});
  });
 
@@ -119,6 +128,8 @@ server.listen(3000,'localhost',() =>{
     console.log("server is listening for requests on port 3000");
 })
 */
+
+// Express allows us to use something called view engines which is similar to html but allow us to inject dynamic data
 
 // What is middle any code that runs on a server between getting a req and sending a response
 // use method is generally used to run middleware
