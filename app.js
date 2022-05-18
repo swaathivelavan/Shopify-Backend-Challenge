@@ -11,7 +11,7 @@ app.listen(3000)
 )
 .catch(()=>console.log("error"));
 
-
+// The save method allows us to add a document to mongoDB using mongoose
 app.get('/add-item',(req,res) => { 
     const item = new ItemModel({
         title:'strawberry',
@@ -24,7 +24,12 @@ app.get('/add-item',(req,res) => {
     .catch((err) => {console.log(err)});
 });
 
-
+// The find method allows us to list all document in mongoDB using mongoose
+app.get('/all-items',(req,res) => {
+    ItemModel.find()
+    .then((result) => res.send(result))
+    .catch((err) => {console.log(err)});
+ });
 
  
 
