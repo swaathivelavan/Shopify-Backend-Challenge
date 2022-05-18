@@ -9,7 +9,7 @@ console.log("hello");
 console.log(dbURI);
 mongoose.connect(dbURI)
 .then(()=> 
-console.log("connected")
+app.listen(3000)
 )
 .catch(()=>console.log("error"));
 
@@ -18,7 +18,7 @@ app.get('/about',(req,res) => {
 res.send();
 });
 
-app.listen(3000);
+
 
 
 
