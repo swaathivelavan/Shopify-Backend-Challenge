@@ -3,10 +3,13 @@ const app = express();
 const mongoose = require('mongoose');
 const { dbURI } = require('./config');
 const ItemModel = require('./models/item')
-
+const cors = require("cors");
 // register view engine ejs
 
 app.set ('view engine','ejs');
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended:true }));
+app.use(cors());
 
 // This ensures that only when database connection has been established we listen for requests
 mongoose.connect(dbURI)
@@ -16,32 +19,71 @@ app.listen(3000)
 .catch(()=>console.log("error"));
 
 // Home page - redirect to list of all inventory items
-app.get('/',(req,res) => {
+app.get('/',(req,res) => { 
     res.redirect('/all-items');
 });
 
 // The save method allows us to add a document to mongoDB using mongoose
-app.get('/add-item',(req,res) => { 
-    const item = new ItemModel({
-        title:'strawberry',
-        description:'a juicy fruit',
-        quantity:5,
-        warehouse_location:'New York - 1'
-    });
-    item.save()
-    .then((result) => res.send(result))
-    .catch((err) => {console.log(err)});
-});
+app.post('/add-item',(req,res) => { 
 
-// The find method allows us to list all document in mongoDB using mongoose
+    const item = new ItemModel(req.body);
+    item.save()
+    .then((result) => res.redirect('/all-items'))
+    .catch((err) => {console.log(err)});
+   
+});
+//edit item
+
+app.get('/edit/:id', (req, res) => {
+    const id = req.params.id;
+    ItemModel.findById(id)
+      .then(result => {
+        console.log(result);
+        res.render('edit', { item: result, page: 'Edit an Item' });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+  app.post('/edit-item/:id', (req, res) => {
+    const id = req.params.id;
+    console.log("req")
+    console.log(req);
+    ItemModel.findByIdAndUpdate(id,req.body)
+      .then(result => {
+        res.redirect('/all-items');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+// The find method allows us to list all document in mongoDB using mongoose - sorted by most recently added
 app.get('/all-items',(req,res) => {
-    ItemModel.find()
+    ItemModel.find().sort({createdAt: -1})
     .then((result) =>  res.render('index', {items:result ,page:'Shopify Inventory'} ))
     .catch((err) => {console.log(err)});
  });
 
- 
+ // blog routes
+app.get('/add', (req, res) => {
+    res.render('add', { page: 'Add a new item' });
+  });
 
+// delete the inventory item 
+app.delete('/delete/:id', (req, res) => {
+    const id = req.params.id;
+    
+    
+    ItemModel.findByIdAndDelete(id)
+      .then(result => {
+        res.json({ redirect: '/' });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
 
 
 
