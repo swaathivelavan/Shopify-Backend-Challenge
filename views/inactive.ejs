@@ -7,26 +7,25 @@
         <% if (items.length > 0) { %>
             <% items.forEach(item => { %>
              <div class='item'>
-             <button class="delete" data-doc="<%= item._id %>" onclick="myFunction()">delete</button>
+             <button class="recover" data-doc="<%= item._id %>" onclick="myFunction()">Undelete/Recover</button>
               <a class="single" href="/edit/<%= item._id %>">edit</a>
               <h3 class="title"><%= item.title %></h3>
               <p class="detail"><%= item.description %></p>
               <p class="detail"><%= item.quantity %></p>
               <p class="detail"><%= item.warehouse_location %></p>
+              <p class="detail"><strong>Deletion comments:</strong><%= item.deletion_comments %></p>
               </div>
             <% }) %>
           <% } else { %>
-            <p>No items in the inventory..Do you want to add items?</p>
+            <p>No items to recover</p>
           <% } %>
     </body>
     <script>
-        const trash = document.querySelector('button.delete');
+        const recover = document.querySelector('button.recover');
         function myFunction(){
-            let comments = prompt('Type here');
- 
             console.log("clicked");
 
-                 const endpoint = `/delete/${trash.dataset.doc}/${comments}`;
+                 const endpoint = `/recover/${recover.dataset.doc}`;
           fetch(endpoint, {
             method: 'DELETE',
           })
@@ -36,5 +35,6 @@
         }
         
       </script>
+
 
 </html>
