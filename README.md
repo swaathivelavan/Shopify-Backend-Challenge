@@ -21,3 +21,14 @@ I also implemented the following extra functionality that was required.
 ## Handling Undeletion/Recovery
 
 In order to do this, I created another collection that contained the inactive items. I save the same object id it was stored with intially, so that when we recover it we can restore it with the same id.
+
+## Steps to run:
+
+In order to run the web app, you can use replit. Just click the run button
+
+https://shopify-backend-challenge.swaathivelavan.repl.co/all-items
+
+To run on your local machine, after downloading the files :
+
+npm install - to install all packages
+node server.js - to run the web app
