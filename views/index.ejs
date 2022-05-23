@@ -9,10 +9,10 @@
              <div class='item'>
              <button class="delete" data-doc="<%= item._id %>" onclick="myFunction()">delete</button>
               <a class="single" href="/edit/<%= item._id %>">edit</a>
-              <h3 class="title"><%= item.title %></h3>
-              <p class="detail"><%= item.description %></p>
-              <p class="detail"><%= item.quantity %></p>
-              <p class="detail"><%= item.warehouse_location %></p>
+              <p class="title"><strong>Item name:</strong> <%= item.title %></p>
+              <p class="detail"><strong>Description:</strong> <%= item.description %></p>
+              <p class="detail"><strong>Quantity:</strong><%= item.quantity %></p>
+              <p class="detail"><strong>Warehouse Location:</strong> <%= item.warehouse_location %></p>
               </div>
             <% }) %>
           <% } else { %>
